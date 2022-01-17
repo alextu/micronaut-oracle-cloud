@@ -11,7 +11,7 @@ import javax.sql.DataSource
 import java.sql.Connection
 import java.sql.ResultSet
 
-@spock.lang.Ignore // TODO temporary
+//@spock.lang.Ignore // TODO temporary
 @Requires({ System.getenv("ATP_USER") && System.getenv("ATP_PASS") && System.getenv("ATP_OCID") })
 class UcpPoolConfigurationListenerSpec extends Specification {
 
@@ -41,6 +41,9 @@ class UcpPoolConfigurationListenerSpec extends Specification {
         ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM DUAL")
         resultSet.next()
         resultSet.getString(1) == "X"
+
+        cleanup:
+        context.close()
     }
 
     def "test it skips datasource without ocid field"() {
@@ -63,5 +66,8 @@ class UcpPoolConfigurationListenerSpec extends Specification {
         ResultSet resultSet = connection.createStatement().executeQuery("SELECT 1")
         resultSet.next()
         resultSet.getString(1) == "1"
+
+        cleanup:
+        context.close()
     }
 }

@@ -15,6 +15,9 @@
  */
 package io.micronaut.oraclecloud.atp.jdbc.upc;
 
+import io.micronaut.aop.InterceptorBean;
+import io.micronaut.aop.MethodInterceptor;
+import io.micronaut.configuration.jdbc.ucp.DatasourceConfiguration;
 import io.micronaut.context.BeanLocator;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.event.BeanCreatedEvent;
@@ -99,11 +102,9 @@ public class UcpPoolConfigurationListener implements BeanCreatedEventListener<Da
                         .loadWalletArchive(autonomousDatabaseConfiguration);
 
                 try {
-                    if (StringUtils.isEmpty(bean.getConnectionFactoryClassName())) {
-                        LOG.trace("Configured connection factory " + ORACLE_JDBC_POOL_ORACLE_DATA_SOURCE + " for [{}] datasource",
-                                beanName);
-                        bean.setConnectionFactoryClassName(ORACLE_JDBC_POOL_ORACLE_DATA_SOURCE);
-                    }
+                    LOG.debug("Configured connection factory " + ORACLE_JDBC_POOL_ORACLE_DATA_SOURCE + " for [{}] datasource",
+                            beanName);
+                    bean.setConnectionFactoryClassName(ORACLE_JDBC_POOL_ORACLE_DATA_SOURCE);
 
                     walletArchive.configure(new OracleDataSourceAttributes() {
 
